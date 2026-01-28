@@ -1,28 +1,26 @@
-import { Hono } from 'hono'
+const expresss = require('express');
+const bodyParset = require('body-parser');
 
-const app = new Hono()
+const app = express();
+const port = 3000;
 
-app.get('/', (c) => {
-  return c.json({ message: 'Tontine API is running' })
-})
+app.use(bodyParset.json());
 
-export default app
+let tasks = [
+  { id: 1, description: 'faire une tontine'
+  { id: 2, description: 'Apprendre Node js' 
 
-import { Hono } from 'hono'
+]
 
-const app = new Hono()
+app.get('/tasks/:id', (reqq, res) => {
+  const taskId = paeseInt(req.params.id );
+  const task = tasks.find(t => t.id === taskId);
 
-// Middleware global 1 : logger
-app.use('*', async (c, next) => {
-  console.log(`${c.req.method} ${c.req.url}`)
-  await next()
-})
+  if (task) {
+    res.json(task);
+  } else {
+    res.status(404).json({ message: 'Task not found' });
+  }
+});
 
-// Middleware global 2 : parser JSON automatique (Hono le fait déjà bien)
 
-// Route test
-app.get('/', (c) => {
-  return c.json({ message: 'API OK 🚀' })
-})
-
-export default app
